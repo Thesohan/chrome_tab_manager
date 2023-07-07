@@ -52,3 +52,7 @@ chrome.runtime.onInstalled.addListener(() => {
     });
   });
   
+
+  chrome.runtime.onStartup.addListener(() => {
+    chrome.runtime.reload();
+  });
