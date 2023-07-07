@@ -1,0 +1,17 @@
+{
+    "manifest_version": 3,
+    "name": "Tab Manager",
+    "version": "1.0",
+    "description": "Automatically closes the least used tab when the number of opened tabs exceeds 10.",
+    "permissions": ["tabs", "storage"],
+    "background": {
+      "service_worker": "background.js"
+    },
+    "options_page": "options.html",
+    "icons": {
+      "16": "default_icon16.png",
+      "48": "default_icon48.png",
+      "128": "default_icon128.png"
+    }
+  }
+  
