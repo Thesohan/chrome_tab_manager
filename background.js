@@ -42,15 +42,28 @@ class LRUCache {
 
 
 const MAX_OPEN_TABS = 10
+var obj = new LRUCache(MAX_OPEN_TABS);
 
 chrome.runtime.onInstalled.addListener(() => {
-
-
-  var obj = new LRUCache(MAX_OPEN_TABS);
-    
-    chrome.tabs.onActivated.addListener((activeInfo) => {
+  chrome.tabs.onActivated.addListener((activeInfo) => {
+    const tabId = activeInfo.tabId;
+           
+    if (obj.cache.size === 0) {
+      chrome.tabs.query({}, function (tabs) {
+        // if cache is 0 and there are already opened tab, push them in the cache
+          console.log(tabs,"tabs")
+        tabs.forEach(element => {
+          if (element.id !== tabId) {
+            keyToBeDeleted = obj.put(element.id, Date.now());
+            if (keyToBeDeleted !== undefined) {
+              console.log("keyto be deleted",keyToBeDeleted)
+              chrome.tabs.remove(keyToBeDeleted);
+            }      
+          }
+        });
+        });
+    }
       console.log("on activated", activeInfo.tabId);
-      const tabId = activeInfo.tabId;
       keyToBeDeleted = obj.put(tabId, Date.now());
       if (keyToBeDeleted !== undefined) {
         console.log("keyto be deleted",keyToBeDeleted)
@@ -68,6 +81,7 @@ chrome.runtime.onInstalled.addListener(() => {
 
   chrome.runtime.onStartup.addListener(() => {
     chrome.runtime.reload();
+
   });
 
 
